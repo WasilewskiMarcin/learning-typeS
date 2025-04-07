@@ -1,0 +1,21 @@
+{
+	"name": "javascript-learning",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"compile": "tsc --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/WasilewskiMarcin/javascript-learning.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"bugs": {
+		"url": "https://github.com/WasilewskiMarcin/javascript-learning/issues"
+	},
+	"homepage": "https://github.com/WasilewskiMarcin/javascript-learning#readme"
+}
