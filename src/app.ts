@@ -1,9 +1,10 @@
-let age: number = 29
-age = 30
+const input1Element: HTMLInputElement = document.querySelector("#input1");
+const input2Element: HTMLInputElement = document.querySelector("#input2");
+const addButtonElement = document.querySelector("#button");
 
-let ageAsString: string = 'dwa'
-ageAsString = `${age}`
+const add = (v1, v2) => v1 + v2;
 
-const add = (v1: number, v2: number) => v1 + v2
-
-console.log(add(10, 5))
+addButtonElement.addEventListener("click", () => {
+    const sum = add(Number(input1Element.value), Number(    input2Element.value));
+    console.log(sum);
+});
