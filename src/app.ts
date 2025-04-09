@@ -4,54 +4,68 @@
 // </li>
 
 // Wyrzucić śmieci
-// Pójść na siłownie 
+// Pójść na siłownie
 // Nakarmić koty
 // Wyrzucić śmieci
-const tasksContainerElement :HTMLElement = document.querySelector(".tasks")!;
-const tasksNameInputElement :HTMLInputElement = document.querySelector("#name")!;
-const addBtnElement :HTMLButtonElement = document.querySelector("button")!;
+const tasksContainerElement: HTMLElement = document.querySelector('.tasks')!
+const tasksNameInputElement: HTMLInputElement = document.querySelector('#name')!
+const addBtnElement: HTMLButtonElement = document.querySelector('button')!
 
 // const task ={
 //     name: "wyrzucić śmieci",
 //     isDone: false,
 // }
-const tasks: {name: string; isDone: boolean}[] = [{name:" Wyrzucić śmieci", isDone: false}, {name:"Pójść na siłownie", isDone:true}, {name: "Nakarmić koty", isDone: false}];
 
-const render= () => {
-    tasksContainerElement.innerHTML = ""; // czyszczenie kontenera z poprzednich elementów
-    tasks.forEach((task, index)=>{
+interface Task {
+	name: string
+	isDone: boolean
+	category?: string
+}
 
 
-        const taskElement: HTMLElement = document.createElement("li");
-        const id = `task-${index}`;
-        const labelElement: HTMLLabelElement = document.createElement("label");
-        labelElement.innerText = task.name;
-        labelElement.setAttribute("for", id);
+const categories: string[] = ['general', 'work', 'gym', 'hobby']
+const tasks: Task[] = [
+	{ name: ' Wyrzucić śmieci', isDone: false, category: 'hobby' },
+	{ name: 'Pójść na siłownie', isDone: true, category: 'gym' },
+	{ name: 'Nakarmić koty', isDone: false, category: 'work' },
+]
 
-        const checkboxElement: HTMLInputElement = document.createElement("input");
-        checkboxElement.type = "checkbox";
-        checkboxElement.name = task.name;
-        checkboxElement.id = id;
-        checkboxElement.checked = task.isDone;
-        checkboxElement.addEventListener("change", () => {
-            task.isDone = !task.isDone; // zmiana stanu zadania
-        });
+const render = () => {
+	tasksContainerElement.innerHTML = '' // czyszczenie kontenera z poprzednich elementów
+	tasks.forEach((task, index) => {
+		const taskElement: HTMLElement = document.createElement('li')
+		if (task.category) {
+			taskElement.classList.add(task.category)
+		}
+		const id = `task-${index}`
+		const labelElement: HTMLLabelElement = document.createElement('label')
+		labelElement.innerText = task.name
+		labelElement.setAttribute('for', id)
 
-        taskElement.appendChild(labelElement);
-        taskElement.appendChild(checkboxElement);
-        tasksContainerElement.appendChild(taskElement);
-    });
-};
+		const checkboxElement: HTMLInputElement = document.createElement('input')
+		checkboxElement.type = 'checkbox'
+		checkboxElement.name = task.name
+		checkboxElement.id = id
+		checkboxElement.checked = task.isDone
+		checkboxElement.addEventListener('change', () => {
+			task.isDone = !task.isDone // zmiana stanu zadania
+		})
 
-const addTask = (taskName) => {
-    tasks.push({name: taskName, isDone: false});
-};
+		taskElement.appendChild(labelElement)
+		taskElement.appendChild(checkboxElement)
+		tasksContainerElement.appendChild(taskElement)
+	})
+}
 
-addBtnElement.addEventListener("click", (event : Event) => {
-    event.preventDefault(); // zapobiega przeładowaniu strony (wysłaniu formularza);
-    addTask(tasksNameInputElement.value);
-    render();
+const addTask = (task: Task) => {
+	tasks.push(task)
+}
 
-});
+addBtnElement.addEventListener('click', (event: Event) => {
+	event.preventDefault() // zapobiega przeładowaniu strony (wysłaniu formularza);
+	addTask({ name: tasksNameInputElement.value, isDone: false })
+	render()
+})
 
-render();
+addTask({ name: 'zrobic klate', isDone: false, category:"gym" })
+render()
