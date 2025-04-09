@@ -10,20 +10,23 @@
 const tasksContainerElement: HTMLElement = document.querySelector('.tasks')!
 const tasksNameInputElement: HTMLInputElement = document.querySelector('#name')!
 const addBtnElement: HTMLButtonElement = document.querySelector('button')!
+const categoriesContainerElement: HTMLInputElement = document.querySelector('.categories')!
 
 // const task ={
 //     name: "wyrzucić śmieci",
 //     isDone: false,
 // }
 
+let selectedCategory: Category
+
+type Category = 'general' | 'work' | 'gym' | 'hobby'
 interface Task {
 	name: string
 	isDone: boolean
-	category?: string
+	category?: Category
 }
 
-
-const categories: string[] = ['general', 'work', 'gym', 'hobby']
+const categories: Category[] = ['general', 'work', 'gym', 'hobby']
 const tasks: Task[] = [
 	{ name: ' Wyrzucić śmieci', isDone: false, category: 'hobby' },
 	{ name: 'Pójść na siłownie', isDone: true, category: 'gym' },
@@ -57,15 +60,40 @@ const render = () => {
 	})
 }
 
+const renderCategories = () => {
+	categories.forEach(category => {
+		const categoryElement: HTMLElement = document.createElement('li')
+		const radioInputElement: HTMLInputElement = document.createElement('input')
+		radioInputElement.type = 'radio'
+		radioInputElement.name = 'category'
+		radioInputElement.value = category
+		radioInputElement.id = `category-${category}`
+		radioInputElement.addEventListener('change', () => {
+			selectedCategory = category
+		})
+
+		const labelElement: HTMLLabelElement = document.createElement('label')
+		labelElement.setAttribute('for', `category-${category}`)
+		labelElement.innerText = category
+		categoryElement.appendChild(radioInputElement)
+		categoryElement.appendChild(labelElement)
+		categoriesContainerElement.appendChild(categoryElement)
+	})
+}
+
 const addTask = (task: Task) => {
 	tasks.push(task)
 }
 
 addBtnElement.addEventListener('click', (event: Event) => {
+	// const selectedRadioElement: HTMLInputElement = document.querySelector("input[type='radio]:checked")
+	// const selectedCategory: Category = selectedRadioElement.value as Category
+
 	event.preventDefault() // zapobiega przeładowaniu strony (wysłaniu formularza);
-	addTask({ name: tasksNameInputElement.value, isDone: false })
+	addTask({ name: tasksNameInputElement.value, isDone: false, category: selectedCategory })
 	render()
 })
 
-addTask({ name: 'zrobic klate', isDone: false, category:"gym" })
+addTask({ name: 'zrobic klate', isDone: false, category: 'gym' })
+renderCategories()
 render()
